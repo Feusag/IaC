@@ -1,0 +1,42 @@
+version: "2"
+
+services:
+  traefik:
+    image: traefik
+    container_name: traefik
+    networks:
+      - traefik
+      - monitoring
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8088:8088"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=traefik"
+      - "traefik.frontend.rule=Host:internal.myapplication.com; PathPrefixStrip:/traefik"
+      - "traefik.port=8088"
+      - "traefik.docker.network=traefik"
+      - "traefik.frontend.headers.SSLRedirect=true"
+      - "traefik.frontend.headers.STSSeconds=315360000"
+      - "traefik.frontend.headers.browserXSSFilter=true"
+      - "traefik.frontend.headers.contentTypeNosniff=true"
+      - "traefik.frontend.headers.forceSTSHeader=true"
+      - "traefik.frontend.headers.SSLHost=myapplication.com"
+      - "traefik.frontend.headers.STSIncludeSubdomains=true"
+      - "traefik.frontend.headers.STSPreload=true"
+      - "traefik.frontend.headers.frameDeny=true"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${PWD}/acme.json:/etc/traefik/acme.json
+      - ${PWD}/traefik.toml:/etc/traefik/traefik.toml
+      - ${PWD}/servers.toml:/etc/traefik/servers.toml
+    restart: unless-stopped
+    labels:
+      org.label-schema.group: "traefik"
+
+networks:
+  traefik:
+    external: true
+  monitoring:
+    external: true

@@ -1,0 +1,45 @@
+debug = false
+logLevel = "DEBUG"
+defaultEntryPoints = ["http", "https"]
+
+[api]
+entryPoint = "traefik"
+dashboard = true
+
+[metrics]
+  [metrics.prometheus]
+  entryPoint = "traefik"
+
+[docker]
+endpoint = "unix:///var/run/docker.sock"
+domain = "docker.localhost"
+watch = true
+exposedbydefault = false
+network = "traefik"
+
+[entryPoints]
+  [entryPoints.http]
+  address = ":80"
+  [entryPoints.https]
+  address = ":443"
+    [entryPoints.https.tls]
+  [entrypoints.traefik]
+  address = ":8088"
+
+[acme]
+email = "coolsauce@myapplication.com"
+storage = "/etc/traefik/acme.json"
+#storage = "acme.json"
+acmeLogging = true
+entryPoint = "https"
+onHostRule = true
+    [acme.httpChallenge]
+    entryPoint = "http"
+[[acme.domains]]
+   main = "*.myapplication.com"
+
+# Enable file configuration backend
+# Optional
+[file]
+   filename = "/etc/traefik/servers.toml"
+   watch = true

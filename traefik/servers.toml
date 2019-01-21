@@ -1,0 +1,52 @@
+loglevel = "INFO"
+
+[entryPoints]
+  [entryPoints.http]
+     address = ":80"
+  [entryPoints.http.redirect]
+     regex = "^http://(.*)"
+     replacement = "https://$1"
+     permanent = true
+  [entryPoints.https]
+     address = ":443"
+
+[backends]
+
+#app1
+[backends.app1-internal]
+[backends.app1-internal.servers]
+[backends.app1-internal.servers.app1]
+  url = "http://app1"
+  weight = 0
+
+#app2
+[backends.app2-internal]
+[backends.app2-internal.servers]
+[backends.app2-internal.servers.app2]
+  url = "http://10.6.66.15"
+  weight = 0
+
+[frontends]
+
+#app1
+[frontends.app1-external]
+  backend = "app1-internal"
+  InsecureSkipVerify = true
+[frontends.app1-external.routes]
+[frontends.app1-external.routes.app1-external]
+  rule = "Host:app1.myapplication.com"
+[frontends.app1-internal]
+  backend = "app1-internal"
+  InsecureSkipVerify = true
+[frontends.app1-internal.routes]
+[frontends.app1-internal.routes.app1-internal]
+  rule = "Host:app1.local.myapplication.com"
+
+#app2
+[frontends.app2-external]
+  backend = "app2-internal"
+  passHostHeader = true
+  InsecureSkipVerify = true
+[frontends.app2-external.routes]
+[frontends.app2-external.routes.app1-external]
+  rule = "Host:app2.myapplication.com"

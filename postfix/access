@@ -1,0 +1,13 @@
+myapplication.com OK
+local.myapplication.com OK
+# secure servers
+10.6.65.0/24 OK
+# router
+10.6.66.254 OK
+# others
+10.6.66.9 OK
+10.6.66.10 OK
+10.6.66.12 OK
+10.6.66.22 OK
+10.6.66.32 OK
+10.6.66.42 OK

@@ -1,0 +1,23 @@
+version: '2'
+
+services:
+  portainer:
+    image: portainer/portainer
+    container_name: portainer
+    networks:
+      - monitoring
+    ports:
+      - "9000:9000"
+    command: -H unix:///var/run/docker.sock
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${PWD}/portainer_data:/data
+    labels:
+      org.label-schema.group: "monitoring"
+
+volumes:
+  portainer_data:
+
+networks:
+  monitoring:
+    external: true
