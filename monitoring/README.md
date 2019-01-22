@@ -13,6 +13,7 @@ Demo of stack for monitoring composed by:
 ## How to run
 
 ## export variables or have these set in the environment
+```
 export ROOT_URL=http://grafana:3000
 export DEFAULT_INSTANCE_NAME=grafana
 export ADMIN_USER=admin
@@ -20,6 +21,7 @@ export ADMIN_PASSWORD="beans&rice"
 export GF_SECURITY_ADMIN_USER=admin
 export GF_SECURITY_ADMIN_PASSWORD="beans&rice"
 export GF_USERS_ALLOW_SIGN_UP=false
+```
 
 ### To load
 
